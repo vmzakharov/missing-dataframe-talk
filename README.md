@@ -31,6 +31,6 @@ Join this talk and discover how DataFrames can elevate your Java programming exp
   * Python?
   * Kotlin?
   * Other examples requiring expressions (show benefits of the external DSL in dataframe-ec)
-  * Similariities and differences between different data frame implementation 
+  * Similarities and differences between different data frame implementation 
 * Conclusion
 

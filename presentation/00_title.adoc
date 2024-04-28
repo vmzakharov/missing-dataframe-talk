@@ -1,0 +1,28 @@
+[frame=none]
+[grid=none]
+[cols="1,1"]
+|===
+a|[discrete]
+[.text-center]
+== Are You Missing a DataFrame?
+[.text-center]
+=== The Power of Data Frames in Java
+[.text-center]
+=== dev2next 2024
+|image:assets/dataframe-ec-logo.svg[Title Picture, 70%, float="bottom"]
+|===
+
+'''
+[frame=none]
+[grid=none]
+[cols="1,3"]
+|===
+|Vladimir Zakharov
+|link:https://twitter.com/zakhav[@zakhav]
+
+|Donald Raab
+|link:https://twitter.com/TheDonRaab[@TheDonRaab]
+|===
+'''
+
+link:01_intro.adoc[➡️ Introduction]
