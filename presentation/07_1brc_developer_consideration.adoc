@@ -1,0 +1,22 @@
+[.text-center]
+== 1BRC - Optimized for Developer
+[.text-left]
+
+What if instead of peak performance we optimized for
+
+[.text-left]
+** code readability
+** maintainability
+** developer time
+
+[.text-left]
+?
+
+[.text-left]
+New requirements!
+
+[.text-left]
+** The cycles spent developing, understanding, and maintaining this code by humans matter more than achieving the absolute minimum of CPU cycles
+** Deliver a working solution quickly and then optimize it if and when needed
+
+Enter DataFrame.

@@ -18,9 +18,9 @@ public class DonutShop
         return customer;
     }
 
-    public Order createOrder(Customer customer, LocalDate deliveryDate, Map<Donut, Integer> orderItems)
+    public Order createOrder(Customer customer, LocalDate deliveryDate, Donut donut, int quantity)
     {
-        Order order = new Order(customer, deliveryDate, orderItems);
+        Order order = new Order(customer, deliveryDate, donut, quantity);
         this.orders.add(order);
         return order;
     }

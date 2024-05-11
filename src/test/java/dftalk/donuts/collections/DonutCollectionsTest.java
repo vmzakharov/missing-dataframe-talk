@@ -7,9 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DonutCollectionsTest
 {
@@ -46,19 +44,30 @@ public class DonutCollectionsTest
         JELLY = DONUT_SHOP.bakeDonuts("Jelly", 1.50);
         APPLE_CIDER = DONUT_SHOP.bakeDonuts("Apple Cider", 1.50);
 
-        DONUT_SHOP.createOrder(ALICE, YESTERDAY, Map.of(OLD_FASHIONED, 12, BLUEBERRY, 2));
-        DONUT_SHOP.createOrder(BOB,   YESTERDAY, Map.of(OLD_FASHIONED, 12));
-        DONUT_SHOP.createOrder(ALICE, TODAY,     Map.of(APPLE_CIDER, 12, BLUEBERRY, 2));
-        DONUT_SHOP.createOrder(CAROL, TODAY,     Map.of(OLD_FASHIONED, 12));
-        DONUT_SHOP.createOrder(DAVE,  TOMORROW,  Map.of(OLD_FASHIONED, 12));
-        DONUT_SHOP.createOrder(ALICE, TOMORROW,  Map.of(JELLY, 12, BLUEBERRY, 2));
-        DONUT_SHOP.createOrder(BOB,   TOMORROW,  Map.of(PUMPKIN_SPICE, 1));
+        DONUT_SHOP.createOrder(ALICE, YESTERDAY, OLD_FASHIONED, 12);
+        DONUT_SHOP.createOrder(ALICE, YESTERDAY, BLUEBERRY, 2);
+
+        DONUT_SHOP.createOrder(BOB,   YESTERDAY, OLD_FASHIONED, 12);
+
+        DONUT_SHOP.createOrder(ALICE, TODAY,     APPLE_CIDER, 12);
+        DONUT_SHOP.createOrder(ALICE, TODAY,     BLUEBERRY, 2);
+
+        DONUT_SHOP.createOrder(CAROL, TODAY,     OLD_FASHIONED, 12);
+
+        DONUT_SHOP.createOrder(DAVE,  TOMORROW,  OLD_FASHIONED, 12);
+
+        DONUT_SHOP.createOrder(ALICE, TOMORROW,  JELLY, 12);
+        DONUT_SHOP.createOrder(ALICE, TOMORROW,  BLUEBERRY, 2);
+
+        DONUT_SHOP.createOrder(BOB,   TOMORROW,  PUMPKIN_SPICE, 1);
     }
 
     @Test
     public void bestSellers()
     {
-        DONUT_SHOP.orders();
+        Long blorp = DONUT_SHOP.orders()
+                               .stream()
+                               .collect(Collectors.counting());
     }
 
     @Test

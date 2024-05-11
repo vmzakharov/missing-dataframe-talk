@@ -1,0 +1,21 @@
+
+[.text-center]
+== Data Oriented Programming in Java
+
+[.text-left]
+==== Available Out of the Box:
+* Collections/streams
+* Classes/records
+** Records by themselves are great
+** Support in the latest versions of Java - instanceof pattern matching, switch pattern matching, sealed types, etc.
+* Maps
+
+[.text-left]
+==== Drawbacks
+* Memory overhead
+** Byte count goes here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+* Brittle
+* Map Oriented Programming - don't get me started
+
+'''
+link:./03_dop_vs_oop.adoc[⬅️️ DOP vs. OOP]

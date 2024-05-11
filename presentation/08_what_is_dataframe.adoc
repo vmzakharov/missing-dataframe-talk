@@ -1,0 +1,12 @@
+[.text-center]
+== What Is a DataFrame?
+[.text-left]
+
+* A tabular data set that can be manipulated programmatically
+* Different columns can contain values of different types, similar to a relational table
+* Tabular data can be loaded as a data frame from a file, or from a database result set, or anything else that looks like a table or can be made look like a table
+* A data frame can also be created programmatically either by specifying its values or by transforming the existing data frames.
+* Combines the efficiency of collection frameworks with the ability to group data (the way domain objects, or maps, or relational tables, or spreadsheets do), and easily transform and organize data in our code.
+* Offer the benefits of developer efficiency, flexibility, and code readability
+* Can offer memory savings and better performance than the alternative approaches
+* Used in real-world scenarios: data transformation, data enrichment, data validation, and reconciliation

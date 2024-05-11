@@ -1,4 +1,7 @@
-=== Are You Missing a DataFrame? - Introduction
+[.text-center]
+== Introduction
+
+[.text-left]
 ==== Donald Raab
 * Managing Director & Distinguished Engineer, BNY Mellon
 * Creator, Project Lead, Committer for link:https://github.com/eclipse/eclipse-collections[Eclipse Collections]
@@ -7,6 +10,7 @@
 * Member of the JSR 335 Expert Group (Lambdas, Streams)
 * Contributing Author, "link:https://www.oreilly.com/library/view/97-things-every/9781491952689/[97 Things Every Java Programmer Should Know]" - O'Reilly
 
+[.text-left]
 ==== Vladimir Zakharov
 * Eh
 

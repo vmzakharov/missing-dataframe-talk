@@ -1,0 +1,50 @@
+[.text-center]
+== Data Oriented vs. Object Oriented
+
+[.text-center]
+==== Data/State
+[cols="a,a"]
+|===
+|
+* Take my state. Please.
+** Just data as records, tables, collections
+** Data is immutable
+|
+* State? What state?
+** Protect your privates
+** Data is Encapsulated
+|===
+
+[.text-center]
+==== Operations
+[cols="a,a"]
+|===
+|
+* Standalone functions operating on data
+* With few exception (very simple behavior on data elements)
+|
+* Objects responding to messages
+** Implemented as methods
+* Polymorphism allows objects of different types to respond to the same message
+|===
+
+[.text-center]
+==== Good For
+[cols="a,a"]
+|===
+|
+* Experimentation, exploration, ad hoc calculation
+* Separating business logic from data
+** E.g. a business user facing application
+* Dealing with changing data structures
+|
+* Manage complexity of domain structure and behavior
+* Manage change
+* Take advantage of OO tools (polymorphism, inheritance, patterns)
+* Take advantage of OO modeling techniques
+|===
+
+'''
+[.text-left]
+link:./02_data_oriented_programming.adoc[⬅️️ Data Oriented Programming]
+link:./04_dop_tools_in_java.adoc[➡️ DOP in Java]

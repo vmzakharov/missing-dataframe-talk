@@ -1,0 +1,19 @@
+[.text-center]
+== 1BRC Results
+[.text-left]
+
+* Pretty amazing!
+** Top 3 results: 1.535, 1.587, and 1.608 seconds
+** Reference environment: 8 cores, 128 GB RAM)
+* Most submissions
+** Are many hundreds of lines of (well formatted and well factored) code
+** Have fairly helpful comments (well, some)
+** Use advanced Java optimization techniques, Vector API, low level APIs, the latest language features, the latest JVM features, and dark magic
+** Require top expertise and intimate understanding of the JVM and the compiler behavior from the developer
+** Required a good amount of the developer’s time (spent both writing and reading the code).
+** Do not make it obvious how the algorithms work/what exactly they do due to the solution complexity
+
+*This makes sense in the context of the challenge and by itself doesn’t make these solutions “bad code”. +
+Achieving absolute peak performance will require the above “sacrifices”.*
+
+''''
