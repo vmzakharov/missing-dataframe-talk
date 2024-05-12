@@ -21,7 +21,8 @@
 |===
 |
 * Standalone functions operating on data
-* With few exception (very simple behavior on data elements)
+** Methods are exception (very simple behavior on data elements)
+* `if`/`switch` statements in lieu of polymorphism
 |
 * Objects responding to messages
 ** Implemented as methods
@@ -35,7 +36,7 @@
 |
 * Experimentation, exploration, ad hoc calculation
 * Separating business logic from data
-** E.g. a business user facing application
+** E.g. a business user facing application, logic needs to be user defined and externalized
 * Dealing with changing data structures
 |
 * Manage complexity of domain structure and behavior

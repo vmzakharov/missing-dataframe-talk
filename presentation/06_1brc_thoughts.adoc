@@ -4,7 +4,7 @@
 
 * Pretty amazing!
 ** Top 3 results: 1.535, 1.587, and 1.608 seconds
-** Reference environment: 8 cores, 128 GB RAM)
+** Reference environment: 8 cores, 128 GB RAM
 * Most submissions
 ** Are many hundreds of lines of (well formatted and well factored) code
 ** Have fairly helpful comments (well, some)

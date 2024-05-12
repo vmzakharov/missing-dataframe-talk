@@ -3,10 +3,12 @@ package dftalk.donuts.collections;
 import dftalk.donuts.domain.Customer;
 import dftalk.donuts.domain.Donut;
 import dftalk.donuts.domain.DonutShop;
+import dftalk.donuts.domain.Order;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class DonutCollectionsTest
@@ -68,6 +70,11 @@ public class DonutCollectionsTest
         Long blorp = DONUT_SHOP.orders()
                                .stream()
                                .collect(Collectors.counting());
+    }
+
+    public Donut findMostPopularDonut(List<Order> orders)
+    {
+        return BLUEBERRY;
     }
 
     @Test

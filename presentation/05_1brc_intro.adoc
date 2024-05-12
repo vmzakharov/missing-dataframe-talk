@@ -11,16 +11,15 @@ image:assets/would_you_like.svg[Title Picture, 70%, float="bottom", alt="Would y
 [frame=none]
 [grid=none]
 |===
-| Announcement
+| Announcement:
 | *https://www.morling.dev/blog/one-billion-row-challenge/*
 
-| Details and Results
+| Details and Results:
 | *https://github.com/gunnarmorling/1brc*
 |===
 
 '''
 
-[.text-left]
 A classic Data Oriented Programming problem!
 
 '''

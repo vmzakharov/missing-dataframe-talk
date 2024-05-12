@@ -1,0 +1,16 @@
+[.text-center]
+== 1BRC with Dataframe-EC: Output
+[.text-left]
+
+[source,java]
+----
+aggregated.forEach(c ->
+    System.out.printf(
+        "%s=%2.1f/%2.1f/%2.1f\n",
+        c.getString("Station"),
+        c.getFloat("Min"),
+        c.getDouble("Mean"),
+        c.getFloat("Max")
+    )
+);
+----
