@@ -14,6 +14,6 @@
 ** Do not make it obvious how the algorithms work/what exactly they do due to the solution complexity
 
 *This makes sense in the context of the challenge and by itself doesn’t make these solutions “bad code”. +
-Achieving absolute peak performance will require the above “sacrifices”.*
+Achieving absolute peak performance demands the above “sacrifices”.*
 
 ''''

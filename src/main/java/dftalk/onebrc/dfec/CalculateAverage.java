@@ -1,4 +1,4 @@
-package dftalk.onebrc.ec;
+package dftalk.onebrc.dfec;
 
 import io.github.vmzakharov.ecdataframe.dataframe.DataFrame;
 import io.github.vmzakharov.ecdataframe.dataset.CsvDataSet;
@@ -7,7 +7,6 @@ import io.github.vmzakharov.ecdataframe.util.Stopwatch;
 import org.eclipse.collections.api.factory.Lists;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 
 import static io.github.vmzakharov.ecdataframe.dataframe.AggregateFunction.avg2d;

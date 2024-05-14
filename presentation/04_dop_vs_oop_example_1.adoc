@@ -1,0 +1,30 @@
+
+== Object Oriented vs. Data Oriented Donuts
+
+[frame=none]
+[grid=none]
+[cols="1,1"]
+
+|===
+| image:assets/oo_donut_donuts.svg[Donut Donuts, 80%]
+| image:assets/do_donut_data.svg[Donut Donuts, 80%]
+|===
+[.text-left]
+[source,java]
+----
+public List<Donut>
+topThreeBestSellers(List<Order> orders) {
+    return orders.stream()
+        .collect(
+            Collectors.groupingBy(
+                Order::donut,
+                Collectors.summingInt(Order::quantity))
+            )
+        .entrySet()
+        .stream()
+        .sorted(Map.Entry.<~>comparingByValue().reversed())
+        .limit(3)
+        .map(Map.Entry::getKey)
+        .toList();
+}
+----

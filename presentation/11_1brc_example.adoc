@@ -1,0 +1,31 @@
+[.text-center]
+== 1BRC With Toy Data
+
+[frame=none]
+[grid=none]
+[cols="a,a"]
+[%autowidth.stretch]
+|===
+|
+==== "measurements.txt"
+
+[source]
+----
+New York City;34.1
+New York City;24.3
+San Francisco;22.9
+Istanbul;5.9
+New York City;-2.7
+Istanbul;15.0
+San Francisco;-5.4
+Istanbul;13.2
+San Francisco;35.0
+Tauranga;17.4
+----
+
+|
+==== Steps
+1. Load the data from the file.
+2. Perform aggregation and sorting.
+3. Show results on the console.
+|===

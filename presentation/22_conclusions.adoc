@@ -1,0 +1,8 @@
+[.text-center]
+== Conclusions
+
+[.text-left]
+* Bleep
+* Bloop
+* Meep
+* Moop

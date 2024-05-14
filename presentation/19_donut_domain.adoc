@@ -1,0 +1,113 @@
+[.text-center]
+== Donut Store Data
+
+[%autowidth]
+[frame=none]
+[grid=none]
+[cols="a,a"]
+|===
+|
+==== Customers
+[%autowidth]
+!===
+!Name !Street !City !State
+
+!Alice
+!902 S Pacific St
+!Las Vegas
+!NM
+
+!Bob
+!405 Main St
+!Dallas
+!SD
+
+!Carol
+!12300 State St
+!Atlanta
+!MI
+
+!Dave
+!102 S Main St
+!Phoenix
+!OR
+!===
+
+==== Donuts
+[%autowidth]
+[cols="1,>1"]
+!===
+!Description!Price
+
+!Blueberry
+!$1.25
+!Old Fashioned
+!$1.00
+!Pumpkin Spice
+!$0.75
+!Jelly
+!$1.50
+!Apple Cider
+!$1.50
+
+!===
+|
+
+==== Orders
+[%autowidth]
+[cols="1,>1,1,>1"]
+!===
+!Customer !DeliveryDate !Donut !Quantity
+
+!Alice
+!2024-05-12
+!Old Fashioned
+!12
+
+!Alice
+!2024-05-12
+!Blueberry
+!2
+
+!Bob
+!2024-05-12
+!Old Fashioned
+!12
+
+!Alice
+!2024-05-13
+!Apple Cider
+!12
+
+!Alice
+!2024-05-13
+!Blueberry
+!2
+
+!Carol
+!2024-05-13
+!Old Fashioned
+!12
+
+!Dave
+!2024-05-14
+!Old Fashioned
+!12
+
+!Alice
+!2024-05-14
+!Jelly
+!12
+
+!Alice
+!2024-05-14
+!Blueberry
+!2
+
+!Bob
+!2024-05-14
+!Pumpkin Spice
+!1
+!===
+
+|===

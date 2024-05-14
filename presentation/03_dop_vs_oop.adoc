@@ -37,15 +37,15 @@
 * Experimentation, exploration, ad hoc calculation
 * Separating business logic from data
 ** E.g. a business user facing application, logic needs to be user defined and externalized
-* Dealing with changing data structures
+* Flexible data models
 |
-* Manage complexity of domain structure and behavior
-* Manage change
-* Take advantage of OO tools (polymorphism, inheritance, patterns)
-* Take advantage of OO modeling techniques
+* Managing complexity of domain structure and behavior
+* Managing change
+* Taking advantage of OO language features (polymorphism, inheritance)
+* Taking advantage of OO modeling techniques
 |===
 
 '''
 [.text-left]
 link:./02_data_oriented_programming.adoc[⬅️️ Data Oriented Programming]
-link:./04_dop_tools_in_java.adoc[➡️ DOP in Java]
+link:./05_dop_tools_in_java.adoc[➡️ DOP in Java]
