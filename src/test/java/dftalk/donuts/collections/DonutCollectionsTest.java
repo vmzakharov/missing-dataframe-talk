@@ -4,12 +4,14 @@ import dftalk.donuts.domain.Customer;
 import dftalk.donuts.domain.Donut;
 import dftalk.donuts.domain.DonutShop;
 import dftalk.donuts.domain.Order;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DonutCollectionsTest
@@ -41,11 +43,11 @@ public class DonutCollectionsTest
         CAROL = DONUT_SHOP.createCustomer("Carol", "12300 State St", "Atlanta", "MI");
         DAVE = DONUT_SHOP.createCustomer("Dave", "102 S Main St", "Phoenix", "OR");
 
-        BLUEBERRY = DONUT_SHOP.bakeDonuts("Blueberry", 1.25);
-        OLD_FASHIONED = DONUT_SHOP.bakeDonuts("Old Fashioned", 1.00);
-        PUMPKIN_SPICE = DONUT_SHOP.bakeDonuts("Pumpkin Spice", 0.75);
-        JELLY = DONUT_SHOP.bakeDonuts("Jelly", 1.50);
-        APPLE_CIDER = DONUT_SHOP.bakeDonuts("Apple Cider", 1.50);
+        BLUEBERRY = DONUT_SHOP.bakeDonuts("Blueberry", 1.25, 1.00);
+        OLD_FASHIONED = DONUT_SHOP.bakeDonuts("Old Fashioned", 1.00, 0.90);
+        PUMPKIN_SPICE = DONUT_SHOP.bakeDonuts("Pumpkin Spice", 0.75, 0.65);
+        JELLY = DONUT_SHOP.bakeDonuts("Jelly", 1.50, 1.25);
+        APPLE_CIDER = DONUT_SHOP.bakeDonuts("Apple Cider", 1.50, 1.25);
 
         DONUT_SHOP.createOrder(ALICE, YESTERDAY, OLD_FASHIONED, 12);
         DONUT_SHOP.createOrder(ALICE, YESTERDAY, BLUEBERRY, 2);
@@ -89,13 +91,20 @@ public class DonutCollectionsTest
     }
 
     @Test
-    public void totalSpendPerCustomer()
+    public void customersWithDeliveriesTomorrow()
     {
-        DONUT_SHOP.orders();
+        Set<Customer> customers =
+                DONUT_SHOP.orders()
+                     .stream()
+                     .filter(order -> order.deliveryDate().equals(TOMORROW))
+                     .map(Order::customer)
+                     .collect(Collectors.toSet());
+
+        Assertions.assertEquals(Set.of(ALICE, BOB, DAVE), customers);
     }
 
     @Test
-    public void customersWithDeliveriesTomorrow()
+    public void totalSpendPerCustomer()
     {
         DONUT_SHOP.orders();
     }

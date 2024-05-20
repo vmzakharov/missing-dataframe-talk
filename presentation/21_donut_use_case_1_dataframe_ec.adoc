@@ -1,0 +1,53 @@
+[.text-center]
+== List Donuts In Popularity Order
+==== DataFrame-EC
+
+[frame=none]
+[grid=none]
+[cols="60a,~a"]
+|===
+|
+{empty}
+ +
+ +
+ +
+[source,java]
+----
+ImmutableList<String> donutsInPopularityOrder = this.orders
+        .aggregateBy(
+                Lists.immutable.of(sum("Quantity")),
+                Lists.immutable.of("Donut"))
+        .sortBy(Lists.immutable.of("Quantity", "Donut"))
+        .getStringColumn("Donut")
+        .toList();
+
+----
+|
+==== after `aggregateBy`
+[%autowidth]
+[cols="a,a"]
+!===
+!Donut!Quantity
+
+! "Old Fashioned"
+! 48
+
+! "Blueberry"
+! 6
+
+! "Apple Cider"
+! 12
+
+! "Jelly"
+! 12
+
+! "Pumpkin Spice"
+! 1
+!===
+
+|===
+
+[source]
+----
+"Old Fashioned", "Blueberry", "Apple Cider", "Jelly", "Pumpkin Spice",
+----

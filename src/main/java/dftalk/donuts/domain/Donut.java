@@ -1,5 +1,5 @@
 package dftalk.donuts.domain;
 
-public record Donut(String description, Double price)
+public record Donut(String description, double price, double discountPrice)
 {
 }

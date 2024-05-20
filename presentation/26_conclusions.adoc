@@ -6,3 +6,8 @@
 * Bloop
 * Meep
 * Moop
+
+
+Don's thoughts
+1BRC performance
+

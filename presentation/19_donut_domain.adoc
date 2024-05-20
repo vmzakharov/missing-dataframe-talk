@@ -35,20 +35,29 @@
 
 ==== Donuts
 [%autowidth]
-[cols="1,>1"]
+[cols="1,>1,>1"]
 !===
-!Description!Price
+!Description!Price!Price/Dozen
 
 !Blueberry
 !$1.25
+!$1.00
+
 !Old Fashioned
 !$1.00
+!$0.90
+
 !Pumpkin Spice
 !$0.75
+!$0.65
+
 !Jelly
 !$1.50
+!$1.25
+
 !Apple Cider
 !$1.50
+!$1.25
 
 !===
 |

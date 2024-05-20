@@ -24,9 +24,9 @@ public class DonutShop
         return order;
     }
 
-    public Donut bakeDonuts(String description, double price)
+    public Donut bakeDonuts(String description, double price, double discountPrice)
     {
-        Donut donut = new Donut(description, price);
+        Donut donut = new Donut(description, price, discountPrice);
         this.donuts.add(donut);
         return donut;
     }

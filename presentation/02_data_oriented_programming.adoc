@@ -6,9 +6,7 @@
 -- Brian Goetz, "Data Oriented Programming in Java"
 
 [.text-left]
-* Separate code from data ----
-* close to FOP
-* stateless code
+* https://www.infoq.com/articles/data-oriented-programming-java/
 
 '''
 link:./01_intro.adoc[⬅️️ Introduction]

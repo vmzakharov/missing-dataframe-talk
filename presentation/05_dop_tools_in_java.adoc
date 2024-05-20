@@ -4,17 +4,18 @@
 
 [.text-left]
 ==== Available Out of the Box:
+* Records, sealed classes, and pattern matching
+** Records model data aggregate
+** Take advantage of static typing
+** Sealed classes prevent illegal states
+** DOP support keeps improving in the latest versions of Java - instanceof pattern matching, switch pattern matching, sealed types, etc.
 * Collections/streams
-* Classes/records
-** Records by themselves are great
-** Better DOP support in the latest versions of Java - instanceof pattern matching, switch pattern matching, sealed types, etc.
 * Maps
 
 [.text-left]
 ==== Drawbacks
 * Memory overhead
 ** Byte count goes here <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-* Lacks cohesion
 * Brittle
 * Map Oriented Programming - “the horror... the horror...”
 

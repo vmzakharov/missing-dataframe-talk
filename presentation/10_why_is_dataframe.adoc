@@ -2,10 +2,11 @@
 == Why Is a DataFrame?
 [.text-left]
 
-* Combines the efficiency of collection frameworks with the ability to group data and easily transform and organize data in our code.
-* Offer the benefits of developer efficiency, flexibility, and code readability
+* Provides the ability to group data and easily transform and organize data in our code
+* Provides the benefits of developer efficiency, flexibility, and code readability
+* Leverages the efficiency of collection frameworks
 * Can offer memory savings and better performance than the alternative approaches
-* Used in real-world scenarios
+* Is used in real-world scenarios
 ** data transformation
 ** data enrichment
 ** data validation

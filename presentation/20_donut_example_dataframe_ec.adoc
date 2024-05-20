@@ -1,2 +1,0 @@
-[.text-center]
-== Donuts with dataframe-ec
