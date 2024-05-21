@@ -5,12 +5,11 @@ import tech.tablesaw.api.ColumnType;
 import tech.tablesaw.api.Table;
 import tech.tablesaw.io.csv.CsvReadOptions;
 
-import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 
 import static tech.tablesaw.aggregate.AggregateFunctions.*;
-import static tech.tablesaw.api.ColumnType.*;
+import static tech.tablesaw.api.ColumnType.FLOAT;
+import static tech.tablesaw.api.ColumnType.STRING;
 
 public class CalculateAverage
 {

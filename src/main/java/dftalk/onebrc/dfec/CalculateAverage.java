@@ -54,10 +54,10 @@ public class CalculateAverage
         System.out.printf("T: %,d, U: %,d, F: %,d\n", sw.totalMemoryBytes(), sw.freeMemoryBytes(), sw.usedMemoryBytes());
         System.out.printf("Time to aggregate, ms: %,d\n", sw.elapsedTimeMillis());
 
-        aggregated.forEach(c ->
+        aggregated.forEach(row ->
                 System.out.printf(
                         "%s=%2.1f/%2.1f/%2.1f\n",
-                        c.getString("Station"), c.getFloat("Min"), c.getDouble("Mean"), c.getFloat("Max")));
+                        row.getString("Station"), row.getFloat("Min"), row.getDouble("Mean"), row.getFloat("Max")));
 
 //        System.out.println(aggregated.asCsvString());
     }

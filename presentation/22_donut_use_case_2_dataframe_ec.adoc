@@ -1,0 +1,45 @@
+[.text-center]
+==  Customers With Deliveries Tomorrow
+==== DataFrame-EC
+
+[.text-left]
+[source,java]
+----
+DataFrame tomorrowsOrders = this.orders
+    .selectBy("DeliveryDate == toDate('" + TOMORROW +"')");
+    .getStringColumn("Customer")
+    .toList()
+    .toSet();
+
+----
+[.text-left]
+==== after `selectBy`
+[%autowidth]
+[cols="a,a,a,a"]
+|===
+|Customer|DeliveryDate|Donut|Quantity
+
+|"Dave"
+|2024-05-21|
+"Old Fashioned"
+|12
+|"Alice"
+|2024-05-21|
+"Jelly"
+|12
+|"Alice"
+|2024-05-21|
+"Blueberry"
+|2
+|"Bob"
+|2024-05-21|
+"Pumpkin Spice"
+|1
+|===
+
+[.text-left]
+==== result
+[source]
+----
+"Alice", "Dave", "Bob"
+----

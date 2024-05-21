@@ -4,6 +4,7 @@ import dftalk.util.dfec.DataFrameTestUtil;
 import io.github.vmzakharov.ecdataframe.dataframe.DataFrame;
 import io.github.vmzakharov.ecdataframe.dataframe.util.DataFramePrettyPrint;
 import io.github.vmzakharov.ecdataframe.util.ConfigureMessages;
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.junit.jupiter.api.*;
@@ -19,10 +20,10 @@ public class DonutDataFrameEcTest
     private static final LocalDate TODAY = LocalDate.now();
     private static final LocalDate YESTERDAY = TODAY.minusDays(1);
     private static final LocalDate TOMORROW = TODAY.plusDays(1);
-    
+
+    private DataFrame menu;
     private DataFrame customers;
     private DataFrame orders;
-    private DataFrame menu;
 
     @BeforeAll
     public static void initializeErrorMessages()
@@ -84,18 +85,22 @@ public class DonutDataFrameEcTest
     }
 
     @Test
-    public void customersWithDeliveriesTomorrow()
+    public void customersWithLargeDeliveriesTomorrow()
     {
-        DataFrame tomorrowsOrders = this.orders.selectBy("DeliveryDate == toDate('" + TOMORROW +"')");
+        DataFrame tomorrowsOrders = this.orders
+                .selectBy("DeliveryDate == toDate('" + TOMORROW +"') and Quantity >= 12");
 
         System.out.println(tomorrowsOrders);
 
-        ImmutableList<String> tomorrowsCustomers = tomorrowsOrders.getStringColumn("Customer")
-                                                                  .toList();
+        DataFrame justCustomers = tomorrowsOrders.distinct(Lists.immutable.of("Customer"));
+
+
+        RichIterable<String> tomorrowsCustomers = tomorrowsOrders.getStringColumn("Customer")
+                                                                 .toList();
 
         System.out.println(tomorrowsCustomers.makeString("\n"));
 
-        assertEquals(Set.of("Alice", "Bob", "Dave"), tomorrowsCustomers.toSet());
+        assertEquals(Lists.immutable.of("Alice", "Bob", "Dave"), tomorrowsCustomers);
     }
 
     @Test
