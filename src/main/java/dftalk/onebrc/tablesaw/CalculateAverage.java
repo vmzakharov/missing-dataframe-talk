@@ -7,7 +7,9 @@ import tech.tablesaw.io.csv.CsvReadOptions;
 
 import java.net.URL;
 
-import static tech.tablesaw.aggregate.AggregateFunctions.*;
+import static tech.tablesaw.aggregate.AggregateFunctions.max;
+import static tech.tablesaw.aggregate.AggregateFunctions.mean;
+import static tech.tablesaw.aggregate.AggregateFunctions.min;
 import static tech.tablesaw.api.ColumnType.FLOAT;
 import static tech.tablesaw.api.ColumnType.STRING;
 
@@ -51,13 +53,13 @@ public class CalculateAverage
         System.out.printf("T: %,d, U: %,d, F: %,d\n", sw.totalMemoryBytes(), sw.freeMemoryBytes(), sw.usedMemoryBytes());
         System.out.printf("Time to aggregate, ms: %,d\n", sw.elapsedTimeMillis());
 
-        aggregated.forEach(c ->
+        aggregated.forEach(row ->
                 System.out.printf(
                         "%s=%2.1f/%2.1f/%2.1f\n",
-                        c.getString("Station"),
-                        c.getDouble("Min [Temperature]"),
-                        c.getDouble("Mean [Temperature]"),
-                        c.getDouble("Max [Temperature]"))
+                        row.getString("Station"),
+                        row.getDouble("Min [Temperature]"),
+                        row.getDouble("Mean [Temperature]"),
+                        row.getDouble("Max [Temperature]"))
         );
     }
 }

@@ -2,6 +2,7 @@ package dftalk.donuts.dfec;
 
 import dftalk.util.dfec.DataFrameTestUtil;
 import io.github.vmzakharov.ecdataframe.dataframe.DataFrame;
+import io.github.vmzakharov.ecdataframe.dataframe.DfColumnSortOrder;
 import io.github.vmzakharov.ecdataframe.dataframe.util.DataFramePrettyPrint;
 import io.github.vmzakharov.ecdataframe.util.ConfigureMessages;
 import org.eclipse.collections.api.RichIterable;
@@ -9,10 +10,13 @@ import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.junit.jupiter.api.*;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.Set;
 
 import static io.github.vmzakharov.ecdataframe.dataframe.AggregateFunction.sum;
+import static io.github.vmzakharov.ecdataframe.dataframe.DfColumnSortOrder.ASC;
+import static io.github.vmzakharov.ecdataframe.dataframe.DfColumnSortOrder.DESC;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DonutDataFrameEcTest
@@ -69,18 +73,34 @@ public class DonutDataFrameEcTest
     @Test
     public void donutsInPopularityOrder()
     {
-        ImmutableList<String> donutsInPopularityOrder = this.orders
-                .aggregateBy(
-                        Lists.immutable.of(sum("Quantity")),
-                        Lists.immutable.of("Donut"))
-                .sortBy(Lists.immutable.of("Quantity", "Donut"))
-                .getStringColumn("Donut")
-                .toList();
+        DataFrame donutsInPopularityOrder =
+                this.orders
+                        .aggregateBy(
+                                Lists.immutable.of(sum("Quantity")),
+                                Lists.immutable.of("Donut"))
+                        .sortBy(Lists.immutable.of("Quantity", "Donut"),
+                                Lists.immutable.of(DESC, ASC))
+                        .keepColumns(Lists.immutable.of("Donut"));
 
-        System.out.println(donutsInPopularityOrder.makeString("\n"));
+        DataFrame aggregated =
+                this.orders
+                        .aggregateBy(
+                                Lists.immutable.of(sum("Quantity")),
+                                Lists.immutable.of("Donut"));
 
-        Assertions.assertEquals(
-                Lists.immutable.of("Old Fashioned", "Blueberry", "Apple Cider", "Jelly", "Pumpkin Spice"),
+        System.out.println(aggregated);
+
+        DataFrame sorted = aggregated.sortBy(
+                Lists.immutable.of("Quantity", "Donut"),
+                Lists.immutable.of(DESC, ASC));
+
+        System.out.println(sorted.asCsvString());
+
+        System.out.println(donutsInPopularityOrder.asCsvString());
+
+        DataFrameTestUtil.assertEquals(
+                new DataFrame("expected").
+                        addStringColumn("Donut", Lists.immutable.of("Old Fashioned", "Apple Cider", "Jelly", "Blueberry", "Pumpkin Spice")),
                 donutsInPopularityOrder);
     }
 
