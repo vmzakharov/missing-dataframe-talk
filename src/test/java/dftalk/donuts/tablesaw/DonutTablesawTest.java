@@ -1,5 +1,7 @@
 package dftalk.donuts.tablesaw;
 
+import dftalk.util.tablesaw.TablesawTestUtil;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -7,6 +9,9 @@ import tech.tablesaw.api.*;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static tech.tablesaw.aggregate.AggregateFunctions.sum;
 
 public class DonutTablesawTest
 {
@@ -74,19 +79,33 @@ public class DonutTablesawTest
     @Test
     public void donutsInPopularityOrder()
     {
+        Table donutsInPopularityOrder = this.orders
+                .summarize("Quantity", sum)
+                .by("Donut")
+                .sortOn("-Sum [Quantity]", "Donut")
+                .retainColumns("Donut");
 
+            TablesawTestUtil.assertEquals(
+                Table.create("orders summary")
+                    .addColumns(
+                        StringColumn.create(
+                                "Donut",
+                                "Old Fashioned", "Apple Cider", "Jelly", "Blueberry", "Pumpkin Spice")
+                    ),
+                donutsInPopularityOrder
+        );
     }
 
     @Test
     public void customersWithLargeDeliveriesTomorrow()
     {
-        Table tomorrowsOrders = this.orders.where(
+        Table tomorrowsLargeOrders = this.orders.where(
               this.orders.dateColumn("DeliveryDate").isEqualTo(TOMORROW)
         );
 
-        System.out.println(tomorrowsOrders);
+        System.out.println(tomorrowsLargeOrders);
 
-        List<String> tomorrowsCustomers = tomorrowsOrders.stringColumn("Customer")
+        List<String> tomorrowsCustomers = tomorrowsLargeOrders.stringColumn("Customer")
                                                          .asList();
 
         System.out.println(tomorrowsCustomers);
