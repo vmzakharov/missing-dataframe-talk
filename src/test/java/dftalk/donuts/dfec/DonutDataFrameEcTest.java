@@ -2,22 +2,19 @@ package dftalk.donuts.dfec;
 
 import dftalk.util.dfec.DataFrameTestUtil;
 import io.github.vmzakharov.ecdataframe.dataframe.DataFrame;
-import io.github.vmzakharov.ecdataframe.dataframe.DfColumnSortOrder;
 import io.github.vmzakharov.ecdataframe.dataframe.util.DataFramePrettyPrint;
 import io.github.vmzakharov.ecdataframe.util.ConfigureMessages;
-import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.factory.Lists;
-import org.eclipse.collections.api.list.ImmutableList;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
-import java.util.Set;
 
 import static io.github.vmzakharov.ecdataframe.dataframe.AggregateFunction.sum;
 import static io.github.vmzakharov.ecdataframe.dataframe.DfColumnSortOrder.ASC;
 import static io.github.vmzakharov.ecdataframe.dataframe.DfColumnSortOrder.DESC;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class DonutDataFrameEcTest
 {
@@ -65,7 +62,7 @@ public class DonutDataFrameEcTest
                 .addRow("Carol", TODAY, "Old Fashioned", 12)
                 .addRow("Dave",  TOMORROW, "Old Fashioned", 12)
                 .addRow("Alice", TOMORROW, "Jelly", 12)
-                .addRow("Alice", TOMORROW, "Blueberry", 2)
+                .addRow("Carol", TOMORROW, "Blueberry", 2)
                 .addRow("Bob",   TOMORROW, "Pumpkin Spice", 1)
                 ;
     }
@@ -82,22 +79,6 @@ public class DonutDataFrameEcTest
                                 Lists.immutable.of(DESC, ASC))
                         .keepColumns(Lists.immutable.of("Donut"));
 
-        DataFrame aggregated =
-                this.orders
-                        .aggregateBy(
-                                Lists.immutable.of(sum("Quantity")),
-                                Lists.immutable.of("Donut"));
-
-        System.out.println(aggregated);
-
-        DataFrame sorted = aggregated.sortBy(
-                Lists.immutable.of("Quantity", "Donut"),
-                Lists.immutable.of(DESC, ASC));
-
-        System.out.println(sorted.asCsvString());
-
-        System.out.println(donutsInPopularityOrder.asCsvString());
-
         DataFrameTestUtil.assertEquals(
                 new DataFrame("expected").
                         addStringColumn("Donut", Lists.immutable.of("Old Fashioned", "Apple Cider", "Jelly", "Blueberry", "Pumpkin Spice")),
@@ -105,22 +86,24 @@ public class DonutDataFrameEcTest
     }
 
     @Test
-    public void customersWithLargeDeliveriesTomorrow()
+    public void priorityOrdersTomorrow()
     {
-        DataFrame tomorrowsOrders = this.orders
-                .selectBy("DeliveryDate == toDate('" + TOMORROW +"') and Quantity >= 12");
+        DataFrame priorityOrdersTomorrow = this.orders
+                .selectBy(
+                        "DeliveryDate == toDate('%s') and (Quantity >= 12 or Customer == 'Bob'"
+                        .formatted(TOMORROW)
+                );
 
-        System.out.println(tomorrowsOrders);
+        System.out.println(priorityOrdersTomorrow);
 
-        DataFrame justCustomers = tomorrowsOrders.distinct(Lists.immutable.of("Customer"));
-
-
-        RichIterable<String> tomorrowsCustomers = tomorrowsOrders.getStringColumn("Customer")
-                                                                 .toList();
-
-        System.out.println(tomorrowsCustomers.makeString("\n"));
-
-        assertEquals(Lists.immutable.of("Alice", "Bob", "Dave"), tomorrowsCustomers);
+        DataFrameTestUtil.assertEquals(
+                new DataFrame("expected")
+                        .addStringColumn("Customer").addDateColumn("DeliveryDate").addStringColumn("Donut").addLongColumn("Quantity")
+                        .addRow("Dave", TOMORROW, "Old Fashioned", 12)
+                        .addRow("Alice", TOMORROW, "Jelly", 12)
+                        .addRow("Bob",   TOMORROW, "Pumpkin Spice", 1),
+                priorityOrdersTomorrow
+        );
     }
 
     @Test
@@ -147,9 +130,9 @@ public class DonutDataFrameEcTest
         DataFrameTestUtil.assertEquals(
                 new DataFrame("expected")
                         .addStringColumn("Customer").addDoubleColumn("Total Spend")
-                        .addRow("Alice", 48.30)
+                        .addRow("Alice", 45.80)
                         .addRow("Bob",   11.55)
-                        .addRow("Carol", 10.80)
+                        .addRow("Carol", 13.30)
                         .addRow("Dave",  10.80),
                 spendPerCustomer,
                 0.00001

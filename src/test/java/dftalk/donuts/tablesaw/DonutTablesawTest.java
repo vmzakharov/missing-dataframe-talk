@@ -1,7 +1,6 @@
 package dftalk.donuts.tablesaw;
 
 import dftalk.util.tablesaw.TablesawTestUtil;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -10,8 +9,9 @@ import tech.tablesaw.api.*;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static tech.tablesaw.aggregate.AggregateFunctions.sum;
+import static tech.tablesaw.api.QuerySupport.and;
+import static tech.tablesaw.api.QuerySupport.or;
 
 public class DonutTablesawTest
 {
@@ -40,12 +40,18 @@ public class DonutTablesawTest
         this.customers =
                 Table.create("customers")
                      .addColumns(
-                             StringColumn.create("Name", new String[]{"Alice", "Bob", "Carol", "Dave"}),
+                             StringColumn.create(
+                                     "Name",
+                                     "Alice", "Bob", "Carol", "Dave"),
                              StringColumn.create(
                                      "Street",
-                                     new String[]{"902 S Pacific St", "405 Main St", "12300 State St", "102 S Main St"}),
-                             StringColumn.create("City", new String[]{"Las Vegas", "Dallas", "Atlanta", "Phoenix"}),
-                             StringColumn.create("State", new String[]{"NM", "SD", "MI", "OR"})
+                                     "902 S Pacific St", "405 Main St", "12300 State St", "102 S Main St"),
+                             StringColumn.create(
+                                     "City",
+                                     "Las Vegas", "Dallas", "Atlanta", "Phoenix"),
+                             StringColumn.create(
+                                     "State",
+                                     "NM", "SD", "MI", "OR")
                      );
 
         this.orders =
@@ -85,30 +91,49 @@ public class DonutTablesawTest
                 .sortOn("-Sum [Quantity]", "Donut")
                 .retainColumns("Donut");
 
-            TablesawTestUtil.assertEquals(
-                Table.create("orders summary")
-                    .addColumns(
-                        StringColumn.create(
-                                "Donut",
-                                "Old Fashioned", "Apple Cider", "Jelly", "Blueberry", "Pumpkin Spice")
-                    ),
-                donutsInPopularityOrder
+        TablesawTestUtil.assertEquals(
+            Table.create("orders summary")
+                .addColumns(
+                    StringColumn.create(
+                            "Donut",
+                            "Old Fashioned", "Apple Cider", "Jelly", "Blueberry", "Pumpkin Spice")
+                ),
+            donutsInPopularityOrder
         );
     }
 
     @Test
-    public void customersWithLargeDeliveriesTomorrow()
+    public void priorityOrdersTomorrow()
     {
-        Table tomorrowsLargeOrders = this.orders.where(
-              this.orders.dateColumn("DeliveryDate").isEqualTo(TOMORROW)
+        Table priorityOrdersTomorrow = this.orders.where(
+                and(
+                        t -> t.dateColumn("DeliveryDate").isEqualTo(TOMORROW),
+                        or(
+                                t -> t.longColumn("Quantity").isGreaterThanOrEqualTo(12),
+                                t -> t.stringColumn("Customer").isEqualTo("Bob")
+                        )
+                )
         );
 
-        System.out.println(tomorrowsLargeOrders);
+        System.out.println(priorityOrdersTomorrow);
 
-        List<String> tomorrowsCustomers = tomorrowsLargeOrders.stringColumn("Customer")
-                                                         .asList();
-
-        System.out.println(tomorrowsCustomers);
+        TablesawTestUtil.assertEquals(
+                Table.create("orders")
+                     .addColumns(
+                             StringColumn.create(
+                                     "Customer",
+                                     "Dave", "Alice", "Bob"),
+                             DateColumn.create(
+                                     "DeliveryDate",
+                                     TOMORROW, TOMORROW, TOMORROW),
+                             StringColumn.create(
+                                     "Donut",
+                                     "Old Fashioned", "Jelly", "Pumpkin Spice"
+                             ),
+                             LongColumn.create("Quantity", 12, 12, 1)
+                     ),
+                priorityOrdersTomorrow
+        );
     }
 
     @Test
