@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import tech.tablesaw.api.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static tech.tablesaw.aggregate.AggregateFunctions.sum;
 import static tech.tablesaw.api.QuerySupport.and;
@@ -29,12 +28,15 @@ public class DonutTablesawTest
         this.menu =
                 Table.create("menu")
                      .addColumns(
-                             StringColumn.create("Donut",
-                                     new String[]{"Blueberry", "Old Fashioned", "Pumpkin Spice", "Jelly", "Apple Cider"}),
-                             DoubleColumn.create("Price",
-                                     new double[]{1.25, 1.00, 0.75, 1.50, 1.50}),
-                             DoubleColumn.create("DiscountPrice",
-                                     new double[]{1.00, 0.90, 0.65, 1.25, 1.25})
+                             StringColumn.create(
+                                     "Donut",
+                                     "Blueberry", "Old Fashioned", "Pumpkin Spice", "Jelly", "Apple Cider"),
+                             DoubleColumn.create(
+                                     "Price",
+                                     1.25, 1.00, 0.75, 1.50, 1.50),
+                             DoubleColumn.create(
+                                     "DiscountPrice",
+                                     1.00, 0.90, 0.65, 1.25, 1.25)
                      );
 
         this.customers =
@@ -59,7 +61,7 @@ public class DonutTablesawTest
                      .addColumns(
                              StringColumn.create(
                                      "Customer",
-                                     "Alice", "Alice", "Bob", "Alice", "Alice", "Carol", "Dave", "Alice", "Alice", "Bob"),
+                                     "Alice", "Alice", "Bob", "Alice", "Alice", "Carol", "Dave", "Alice", "Carol", "Bob"),
                              DateColumn.create(
                                      "DeliveryDate",
                                      YESTERDAY, YESTERDAY, YESTERDAY, TODAY, TODAY,
@@ -92,7 +94,7 @@ public class DonutTablesawTest
                 .retainColumns("Donut");
 
         TablesawTestUtil.assertEquals(
-            Table.create("orders summary")
+            Table.create("expected")
                 .addColumns(
                     StringColumn.create(
                             "Donut",
@@ -120,16 +122,9 @@ public class DonutTablesawTest
         TablesawTestUtil.assertEquals(
                 Table.create("orders")
                      .addColumns(
-                             StringColumn.create(
-                                     "Customer",
-                                     "Dave", "Alice", "Bob"),
-                             DateColumn.create(
-                                     "DeliveryDate",
-                                     TOMORROW, TOMORROW, TOMORROW),
-                             StringColumn.create(
-                                     "Donut",
-                                     "Old Fashioned", "Jelly", "Pumpkin Spice"
-                             ),
+                             StringColumn.create("Customer", "Dave", "Alice", "Bob"),
+                             DateColumn.create("DeliveryDate", TOMORROW, TOMORROW, TOMORROW),
+                             StringColumn.create("Donut", "Old Fashioned", "Jelly", "Pumpkin Spice"),
                              LongColumn.create("Quantity", 12, 12, 1)
                      ),
                 priorityOrdersTomorrow
@@ -139,10 +134,60 @@ public class DonutTablesawTest
     @Test
     public void totalSpendPerCustomer()
     {
+        Table ordersWithPrices = this.orders
+                .joinOn("Donut")
+                .inner(this.menu);
+
+        System.out.println(ordersWithPrices);
+
+        DoubleColumn orderPrice = DoubleColumn.create("OrderPrice");
+        ordersWithPrices.forEach(
+                row -> {
+                    long quantity = row.getLong("Quantity");
+                    orderPrice.append(
+                        quantity >= 12
+                                ? quantity * row.getDouble("DiscountPrice")
+                                : quantity * row.getDouble("Price")
+                    );
+                }
+        );
+
+        ordersWithPrices.addColumns(orderPrice);
+
+        Table spendPerCustomer = ordersWithPrices
+                .summarize("OrderPrice", sum)
+                .by("Customer")
+                .sortOn("Customer");
+
+        System.out.println(spendPerCustomer);
+
+        TablesawTestUtil.assertEquals(
+                Table.create("expected")
+                        .addColumns(
+                            StringColumn.create("Customer", "Alice", "Bob", "Carol", "Dave"),
+                            DoubleColumn.create("Sum [OrderPrice]", 45.8, 11.55, 13.3, 10.8)
+                        ),
+                spendPerCustomer
+        );
     }
 
     @Test
     public void donutCountPerCustomerPerDay()
     {
+        Table donutsPerCustomerPerDay = this.orders.pivot("Customer", "DeliveryDate", "Quantity", sum);
+
+        System.out.println(donutsPerCustomerPerDay);
+
+        TablesawTestUtil.assertEquals(
+                Table.create("expected")
+                     .addColumns(
+                             StringColumn.create("Customer", "Alice", "Bob", "Carol", "Dave"),
+                             DoubleColumn.create(YESTERDAY.toString(), 14.0, 12.0,  0.0,  0.0),
+                             DoubleColumn.create(TODAY.toString(),     14.0,  0.0, 12.0,  0.0),
+                             DoubleColumn.create(TOMORROW.toString(),  12.0,  1.0,  2.0, 12.0)
+                     ),
+                donutsPerCustomerPerDay
+        );
+
     }
 }

@@ -90,7 +90,7 @@ public class DonutDataFrameEcTest
     {
         DataFrame priorityOrdersTomorrow = this.orders
                 .selectBy(
-                        "DeliveryDate == toDate('%s') and (Quantity >= 12 or Customer == 'Bob'"
+                        "DeliveryDate == toDate('%s') and (Quantity >= 12 or Customer == 'Bob')"
                         .formatted(TOMORROW)
                 );
 
@@ -116,7 +116,7 @@ public class DonutDataFrameEcTest
 
         this.orders.addColumn("OrderPrice", "(Quantity < 12 ? Price : DiscountPrice) * Quantity");
 
-        System.out.println(new DataFramePrettyPrint().prettyPrint(this.orders));
+//        System.out.println(new DataFramePrettyPrint().prettyPrint(this.orders));
 
         DataFrame spendPerCustomer =
                 this.orders
@@ -125,7 +125,7 @@ public class DonutDataFrameEcTest
                         Lists.immutable.of("Customer"))
                     .sortBy(Lists.immutable.of("Customer"));
 
-        System.out.println(new DataFramePrettyPrint().prettyPrint(spendPerCustomer));
+//        System.out.println(new DataFramePrettyPrint().prettyPrint(spendPerCustomer));
 
         DataFrameTestUtil.assertEquals(
                 new DataFrame("expected")
@@ -142,13 +142,26 @@ public class DonutDataFrameEcTest
     @Test
     public void donutCountPerCustomerPerDay()
     {
-        DataFrame pivot = this.orders.pivot(
+        DataFrame donutsPerCustomerPerDay = this.orders.pivot(
                 Lists.immutable.of("Customer"),
                 "DeliveryDate",
                 Lists.immutable.of(sum("Quantity"))
         );
 
-        System.out.println(new DataFramePrettyPrint().prettyPrint(pivot));
+        System.out.println(new DataFramePrettyPrint().prettyPrint(donutsPerCustomerPerDay));
+
+        DataFrameTestUtil.assertEquals(
+                new DataFrame("expected")
+                        .addStringColumn("Customer")
+                        .addLongColumn(YESTERDAY.toString())
+                        .addLongColumn(TODAY.toString())
+                        .addLongColumn(TOMORROW.toString())
+                        .addRow("Alice", 14, 14, 12)
+                        .addRow("Bob"  , 12,  0,  1)
+                        .addRow("Carol",  0, 12,  2)
+                        .addRow("Dave" ,  0,  0, 12),
+                donutsPerCustomerPerDay
+        );
     }
 
     @Disabled
