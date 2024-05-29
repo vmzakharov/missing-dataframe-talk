@@ -99,7 +99,7 @@ public class DonutDataFrameEcTest
         DataFrameTestUtil.assertEquals(
                 new DataFrame("expected")
                         .addStringColumn("Customer").addDateColumn("DeliveryDate").addStringColumn("Donut").addLongColumn("Quantity")
-                        .addRow("Dave", TOMORROW, "Old Fashioned", 12)
+                        .addRow("Dave",  TOMORROW, "Old Fashioned", 12)
                         .addRow("Alice", TOMORROW, "Jelly", 12)
                         .addRow("Bob",   TOMORROW, "Pumpkin Spice", 1),
                 priorityOrdersTomorrow

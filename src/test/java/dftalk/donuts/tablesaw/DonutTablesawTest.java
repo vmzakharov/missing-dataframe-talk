@@ -93,6 +93,11 @@ public class DonutTablesawTest
                 .sortOn("-Sum [Quantity]", "Donut")
                 .retainColumns("Donut");
 
+        System.out.println(this.orders
+                .summarize("Quantity", sum)
+                .by("Donut")
+                .sortOn("-Sum [Quantity]", "Donut"));
+
         TablesawTestUtil.assertEquals(
             Table.create("expected")
                 .addColumns(
@@ -132,7 +137,7 @@ public class DonutTablesawTest
     }
 
     @Test
-    public void totalSpendPerCustomer()
+    public void totalSpendPerCustomer1()
     {
         Table ordersWithPrices = this.orders
                 .joinOn("Donut")
@@ -141,13 +146,55 @@ public class DonutTablesawTest
         System.out.println(ordersWithPrices);
 
         DoubleColumn orderPrice = DoubleColumn.create("OrderPrice");
+
+        ordersWithPrices.addColumns(orderPrice);
+
+        LongColumn quantity = ordersWithPrices.longColumn("Quantity");
+
+        orderPrice.set(
+                quantity.isLessThan(12),
+                ordersWithPrices.doubleColumn("Price").multiply(ordersWithPrices.longColumn("Quantity"))
+        );
+        orderPrice.set(
+                quantity.isGreaterThanOrEqualTo(12),
+                ordersWithPrices.doubleColumn("DiscountPrice").multiply(ordersWithPrices.longColumn("Quantity"))
+        );
+
+        Table spendPerCustomer = ordersWithPrices
+                .summarize("OrderPrice", sum)
+                .by("Customer")
+                .sortOn("Customer");
+
+        System.out.println(spendPerCustomer);
+
+        TablesawTestUtil.assertEquals(
+                Table.create("expected")
+                        .addColumns(
+                            StringColumn.create("Customer", "Alice", "Bob", "Carol", "Dave"),
+                            DoubleColumn.create("Sum [OrderPrice]", 45.8, 11.55, 13.3, 10.8)
+                        ),
+                spendPerCustomer
+        );
+    }
+
+    @Test
+    public void totalSpendPerCustomer2()
+    {
+        Table ordersWithPrices = this.orders
+                .joinOn("Donut")
+                .inner(this.menu);
+
+        System.out.println(ordersWithPrices);
+
+        DoubleColumn orderPrice = DoubleColumn.create("OrderPrice");
+
         ordersWithPrices.forEach(
                 row -> {
                     long quantity = row.getLong("Quantity");
                     orderPrice.append(
-                        quantity >= 12
-                                ? quantity * row.getDouble("DiscountPrice")
-                                : quantity * row.getDouble("Price")
+                        quantity < 12
+                                ? quantity * row.getDouble("Price")
+                                : quantity * row.getDouble("DiscountPrice")
                     );
                 }
         );
@@ -178,14 +225,21 @@ public class DonutTablesawTest
 
         System.out.println(donutsPerCustomerPerDay);
 
+        Table expected = Table.create("expected")
+              .addColumns(
+                      StringColumn.create("Customer", "Alice", "Bob", "Carol", "Dave"),
+                      DoubleColumn.create(YESTERDAY.toString(), 14.0, 12.0, 0.0, 0.0),
+                      DoubleColumn.create(TODAY.toString(), 14.0, 0.0, 12.0, 0.0),
+                      DoubleColumn.create(TOMORROW.toString(), 12.0, 1.0, 2.0, 12.0)
+              );
+
+        expected.column(YESTERDAY.toString()).setMissing(2);
+        expected.column(YESTERDAY.toString()).setMissing(3);
+        expected.column(TODAY.toString()).setMissing(1);
+        expected.column(TODAY.toString()).setMissing(3);
+
         TablesawTestUtil.assertEquals(
-                Table.create("expected")
-                     .addColumns(
-                             StringColumn.create("Customer", "Alice", "Bob", "Carol", "Dave"),
-                             DoubleColumn.create(YESTERDAY.toString(), 14.0, 12.0,  0.0,  0.0),
-                             DoubleColumn.create(TODAY.toString(),     14.0,  0.0, 12.0,  0.0),
-                             DoubleColumn.create(TOMORROW.toString(),  12.0,  1.0,  2.0, 12.0)
-                     ),
+                expected,
                 donutsPerCustomerPerDay
         );
 
