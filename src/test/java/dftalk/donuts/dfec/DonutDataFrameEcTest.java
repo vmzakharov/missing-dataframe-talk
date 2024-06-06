@@ -94,7 +94,7 @@ public class DonutDataFrameEcTest
                         .formatted(TOMORROW)
                 );
 
-        System.out.println(priorityOrdersTomorrow);
+//        System.out.println(priorityOrdersTomorrow);
 
         DataFrameTestUtil.assertEquals(
                 new DataFrame("expected")
