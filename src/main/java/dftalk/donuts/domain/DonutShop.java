@@ -35,4 +35,9 @@ public class DonutShop
     {
         return this.orders;
     }
+
+    public List<Donut> donuts()
+    {
+        return this.donuts;
+    }
 }

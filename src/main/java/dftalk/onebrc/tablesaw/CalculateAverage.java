@@ -50,6 +50,10 @@ public class CalculateAverage
                 .sortOn("Station");
         sw.stop();
 
+        System.out.println( measurements
+                .summarize("Temperature", min, mean, max).by("Station"));
+        System.out.println(aggregated);
+
         System.out.printf("T: %,d, U: %,d, F: %,d\n", sw.totalMemoryBytes(), sw.freeMemoryBytes(), sw.usedMemoryBytes());
         System.out.printf("Time to aggregate, ms: %,d\n", sw.elapsedTimeMillis());
 

@@ -4,15 +4,14 @@ import dftalk.donuts.domain.Customer;
 import dftalk.donuts.domain.Donut;
 import dftalk.donuts.domain.DonutShop;
 import dftalk.donuts.domain.Order;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DonutCollectionsTest
 {
@@ -62,21 +61,15 @@ public class DonutCollectionsTest
         DONUT_SHOP.createOrder(DAVE, TOMORROW, OLD_FASHIONED, 12);
 
         DONUT_SHOP.createOrder(ALICE, TOMORROW, JELLY, 12);
-        DONUT_SHOP.createOrder(ALICE, TOMORROW, BLUEBERRY, 2);
+        DONUT_SHOP.createOrder(CAROL, TOMORROW, BLUEBERRY, 2);
 
         DONUT_SHOP.createOrder(BOB, TOMORROW, PUMPKIN_SPICE, 1);
     }
 
     @Test
-    public void bestSellers()
+    public void donutsInPopularityOrder()
     {
-        var bestSellers = this.topThreeBestSellers(DONUT_SHOP.orders());
-        System.out.println(bestSellers);
-    }
-
-    public List<Donut> topThreeBestSellers(List<Order> orders)
-    {
-        return orders.stream()
+        var bestSellers = DONUT_SHOP.orders().stream()
             .collect(
                   Collectors.groupingBy(
                       Order::donut,
@@ -85,27 +78,60 @@ public class DonutCollectionsTest
             .entrySet()
             .stream()
             .sorted(Map.Entry.<Donut, Integer>comparingByValue().reversed())
-            .limit(3)
             .map(Map.Entry::getKey)
             .toList();
+
+        assertEquals(
+            List.of(OLD_FASHIONED, APPLE_CIDER, JELLY, BLUEBERRY, PUMPKIN_SPICE),
+            bestSellers);
     }
 
     @Test
-    public void customersWithDeliveriesTomorrow()
+    public void priorityOrdersForTomorrow()
     {
-        Set<Customer> customers =
+        Set<Order>  priorityOrdersForTomorrow =
                 DONUT_SHOP.orders()
                      .stream()
-                     .filter(order -> order.deliveryDate().equals(TOMORROW))
-                     .map(Order::customer)
+                     .filter(order ->
+                                 order.deliveryDate().equals(TOMORROW)
+                                 &&
+                                 (order.quantity() >= 12 || order.customer().equals(BOB))
+                     )
                      .collect(Collectors.toSet());
 
-        Assertions.assertEquals(Set.of(ALICE, BOB, DAVE), customers);
+        Set<Order> expected = Set.of(
+            new Order(DAVE, TOMORROW, OLD_FASHIONED, 12),
+            new Order(ALICE, TOMORROW, JELLY, 12),
+            new Order(BOB, TOMORROW, PUMPKIN_SPICE, 1)
+        );
+
+        assertEquals(expected, priorityOrdersForTomorrow);
     }
 
     @Test
     public void totalSpendPerCustomer()
     {
-        DONUT_SHOP.orders();
+        Map<Customer, Double> totalSpendPerCustomer = DONUT_SHOP.orders()
+                .stream()
+                .collect(
+                    Collectors.groupingBy(
+                        Order::customer,
+                        Collectors.summingDouble(order ->
+                            order.quantity()
+                                    * (order.quantity() < 12 ? order.donut().price() : order.donut().discountPrice())
+                        )
+                    )
+                );
+
+        TreeMap<Customer, Double> totalSpendPerCustomerSorted = new TreeMap<>(Comparator.comparing(Customer::name));
+        totalSpendPerCustomerSorted.putAll(totalSpendPerCustomer);
+
+        TreeMap<Customer, Double> expected = new TreeMap<>(Comparator.comparing(Customer::name));
+        expected.put(ALICE, 45.80);
+        expected.put(BOB, 11.55);
+        expected.put(CAROL, 13.30);
+        expected.put(DAVE, 10.80);
+
+        assertEquals(expected, totalSpendPerCustomerSorted);
     }
 }

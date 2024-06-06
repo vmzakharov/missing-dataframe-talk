@@ -113,26 +113,26 @@ public class DonutTablesawTest
     public void priorityOrdersTomorrow()
     {
         Table priorityOrdersTomorrow = this.orders.where(
-                and(
-                        t -> t.dateColumn("DeliveryDate").isEqualTo(TOMORROW),
-                        or(
-                                t -> t.longColumn("Quantity").isGreaterThanOrEqualTo(12),
-                                t -> t.stringColumn("Customer").isEqualTo("Bob")
-                        )
+            and(
+                t -> t.dateColumn("DeliveryDate").isEqualTo(TOMORROW),
+                or(
+                    t -> t.longColumn("Quantity").isGreaterThanOrEqualTo(12),
+                    t -> t.stringColumn("Customer").isEqualTo("Bob")
                 )
+            )
         );
 
         System.out.println(priorityOrdersTomorrow);
 
         TablesawTestUtil.assertEquals(
-                Table.create("orders")
-                     .addColumns(
-                             StringColumn.create("Customer", "Dave", "Alice", "Bob"),
-                             DateColumn.create("DeliveryDate", TOMORROW, TOMORROW, TOMORROW),
-                             StringColumn.create("Donut", "Old Fashioned", "Jelly", "Pumpkin Spice"),
-                             LongColumn.create("Quantity", 12, 12, 1)
-                     ),
-                priorityOrdersTomorrow
+            Table.create("expected")
+                .addColumns(
+                    StringColumn.create("Customer", "Dave", "Alice", "Bob"),
+                    DateColumn.create("DeliveryDate", TOMORROW, TOMORROW, TOMORROW),
+                    StringColumn.create("Donut", "Old Fashioned", "Jelly", "Pumpkin Spice"),
+                    LongColumn.create("Quantity", 12, 12, 1)
+                ),
+            priorityOrdersTomorrow
         );
     }
 
@@ -153,11 +153,11 @@ public class DonutTablesawTest
 
         orderPrice.set(
                 quantity.isLessThan(12),
-                ordersWithPrices.doubleColumn("Price").multiply(ordersWithPrices.longColumn("Quantity"))
+                ordersWithPrices.doubleColumn("Price").multiply(quantity)
         );
         orderPrice.set(
                 quantity.isGreaterThanOrEqualTo(12),
-                ordersWithPrices.doubleColumn("DiscountPrice").multiply(ordersWithPrices.longColumn("Quantity"))
+                ordersWithPrices.doubleColumn("DiscountPrice").multiply(quantity)
         );
 
         Table spendPerCustomer = ordersWithPrices
