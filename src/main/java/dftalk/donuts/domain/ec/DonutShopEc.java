@@ -14,9 +14,9 @@ import java.time.LocalDate;
 public class DonutShopEc
 implements DonutShop
 {
-    private final MutableList<Customer> customers = Lists.mutable.of();
-    private final MutableList<Donut> donuts = Lists.mutable.of();
-    private final MutableList<Order> orders = Lists.mutable.of();
+    private final MutableList<Customer> customers = Lists.mutable.empty();
+    private final MutableList<Donut> donuts = Lists.mutable.empty();
+    private final MutableList<Order> orders = Lists.mutable.empty();
 
     @Override
     public Customer createCustomer(String name, String street, String city, String state)

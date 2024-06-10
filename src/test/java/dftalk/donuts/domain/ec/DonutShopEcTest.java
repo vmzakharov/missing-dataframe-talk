@@ -38,13 +38,13 @@ extends DonutShopTestAbstract
     @Test
     public void donutsInPopularityOrder()
     {
-        MutableBag<Donut> donutCounts = Bags.mutable.of();
+        MutableBag<Donut> donutCounts = Bags.mutable.empty();
 
         DONUT_SHOP.orders()
                   .forEach(order -> donutCounts.addOccurrences(order.donut(), order.quantity()));
 
         MutableList<Donut> donutsInPopularityOrder = donutCounts
-                .collectWithOccurrences(Tuples::pair, Lists.mutable.of())
+                .collectWithOccurrences(Tuples::pair, Lists.mutable.empty())
                 .sortThis(
                     Comparator
                         .comparingInt((Pair<Donut, Integer> p) -> p.getTwo()).reversed()
