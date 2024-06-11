@@ -148,7 +148,7 @@ public class DonutDataFrameEcTest
                 Lists.immutable.of(sum("Quantity"))
         );
 
-        System.out.println(new DataFramePrettyPrint().prettyPrint(donutsPerCustomerPerDay));
+//        System.out.println(new DataFramePrettyPrint().prettyPrint(donutsPerCustomerPerDay));
 
         DataFrameTestUtil.assertEquals(
                 new DataFrame("expected")

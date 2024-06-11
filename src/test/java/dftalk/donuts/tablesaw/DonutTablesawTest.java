@@ -93,11 +93,6 @@ public class DonutTablesawTest
                 .sortOn("-Sum [Quantity]", "Donut")
                 .retainColumns("Donut");
 
-        System.out.println(this.orders
-                .summarize("Quantity", sum)
-                .by("Donut")
-                .sortOn("-Sum [Quantity]", "Donut"));
-
         TablesawTestUtil.assertEquals(
             Table.create("expected")
                 .addColumns(
@@ -122,7 +117,7 @@ public class DonutTablesawTest
             )
         );
 
-        System.out.println(priorityOrdersTomorrow);
+//        System.out.println(priorityOrdersTomorrow);
 
         TablesawTestUtil.assertEquals(
             Table.create("expected")
@@ -165,7 +160,7 @@ public class DonutTablesawTest
                 .by("Customer")
                 .sortOn("Customer");
 
-        System.out.println(spendPerCustomer);
+//        System.out.println(spendPerCustomer);
 
         TablesawTestUtil.assertEquals(
                 Table.create("expected")
@@ -184,7 +179,7 @@ public class DonutTablesawTest
                 .joinOn("Donut")
                 .inner(this.menu);
 
-        System.out.println(ordersWithPrices);
+//        System.out.println(ordersWithPrices);
 
         DoubleColumn orderPrice = DoubleColumn.create("OrderPrice");
 
