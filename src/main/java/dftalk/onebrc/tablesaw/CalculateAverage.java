@@ -20,7 +20,8 @@ public class CalculateAverage
 
     public static void main(String[] args) throws Exception
     {
-        URL measurementFile = CalculateAverage.class.getClassLoader().getResource(MEASUREMENT_PATH + "/" + MEASUREMENT_FILE);
+        URL measurementFile = CalculateAverage.class.getClassLoader()
+                                    .getResource(MEASUREMENT_PATH + "/" + MEASUREMENT_FILE);
 
         CsvReadOptions options = CsvReadOptions
                 .builder(measurementFile)
@@ -30,14 +31,13 @@ public class CalculateAverage
                 .build();
 
         System.out.println("Loading " + MEASUREMENT_FILE);
-
         Stopwatch sw = new Stopwatch();
-
         sw.start();
-        Table measurements = Table.read().usingOptions(options);
 
+        Table measurements = Table.read().usingOptions(options);
         measurements.column(0).setName("Station");
         measurements.column(1).setName("Temperature");
+
         System.out.println(measurements.rowCount());
         sw.stop();
 
@@ -49,10 +49,6 @@ public class CalculateAverage
                 .summarize("Temperature", min, mean, max).by("Station")
                 .sortOn("Station");
         sw.stop();
-
-        System.out.println( measurements
-                .summarize("Temperature", min, mean, max).by("Station"));
-        System.out.println(aggregated);
 
         System.out.printf("T: %,d, U: %,d, F: %,d\n", sw.totalMemoryBytes(), sw.freeMemoryBytes(), sw.usedMemoryBytes());
         System.out.printf("Time to aggregate, ms: %,d\n", sw.elapsedTimeMillis());

@@ -37,6 +37,7 @@ public class CalculateAverage
         System.out.println("Loading " + MEASUREMENT_FILE);
         Stopwatch sw = new Stopwatch();
         sw.start();
+
         DataFrame measurements = msDataSet.loadAsDataFrame();
         System.out.println(measurements.rowCount());
         sw.stop();
@@ -57,8 +58,9 @@ public class CalculateAverage
         aggregated.forEach(row ->
                 System.out.printf(
                         "%s=%2.1f/%2.1f/%2.1f\n",
-                        row.getString("Station"), row.getFloat("Min"), row.getDouble("Mean"), row.getFloat("Max")));
-
-//        System.out.println(aggregated.asCsvString());
+                        row.getString("Station"),
+                        row.getFloat("Min"),
+                        row.getDouble("Mean"),
+                        row.getFloat("Max")));
     }
 }
