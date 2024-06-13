@@ -22,15 +22,15 @@ public class CalculateAverage
 
     public static void main(String[] args) throws Exception
     {
+        URI measurementFile = CalculateAverage.class.getClassLoader()
+                                    .getResource(MEASUREMENT_PATH + "/" + MEASUREMENT_FILE)
+                                    .toURI();
+
         CsvSchema msSchema = new CsvSchema()
                 .addColumn("Station", STRING)
                 .addColumn("Temperature", FLOAT)
                 .separator(';')
                 .hasHeaderLine(false);
-
-        URI measurementFile = CalculateAverage.class.getClassLoader()
-                                                    .getResource(MEASUREMENT_PATH + "/" + MEASUREMENT_FILE)
-                                                    .toURI();
 
         CsvDataSet msDataSet = new CsvDataSet(Path.of(measurementFile), "measurements", msSchema);
 
