@@ -11,9 +11,15 @@
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <junit-jupiter.version>5.10.3</junit-jupiter.version>
+        <tablesaw.version>0.43.1</tablesaw.version>
         <kotlin.version>2.0.0</kotlin.version>
         <kotlin.dataframe.version>0.13.1</kotlin.dataframe.version>
+        <kotlin-test-junit5.version>2.0.0</kotlin-test-junit5.version>
     </properties>
 
     <dependencies>
@@ -26,24 +32,33 @@
         <dependency>
             <groupId>tech.tablesaw</groupId>
             <artifactId>tablesaw-core</artifactId>
-            <version>LATEST</version>
+            <version>${tablesaw.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.8.1</version>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>1.10.3</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test</artifactId>
-            <version>${kotlin.version}</version>
+            <artifactId>kotlin-test-junit5</artifactId>
+            <version>${kotlin-test-junit5.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -84,6 +99,7 @@
                             <sourceDirs>
                                 <source>src/test/java</source>
                                 <source>target/generated-test-sources/test-annotations</source>
+                                <source>src/test/kotlin</source>
                             </sourceDirs>
                         </configuration>
                     </execution>
@@ -95,6 +111,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>default-compile</id>
@@ -122,6 +139,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
