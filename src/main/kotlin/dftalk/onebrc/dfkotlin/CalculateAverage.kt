@@ -14,7 +14,7 @@ fun main() {
 
     val startTime = timeSource.markNow()
 
-    val measurementFile = object {}::class.java.classLoader.getResource("$MEASUREMENT_PATH/$MEASUREMENT_FILE");
+    val measurementFile = object {}::class.java.classLoader.getResource("$MEASUREMENT_PATH/$MEASUREMENT_FILE")
 
     val measurements = DataFrame.readCSV(
         measurementFile!!,
