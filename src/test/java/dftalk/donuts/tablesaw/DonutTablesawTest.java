@@ -138,7 +138,7 @@ public class DonutTablesawTest
                 .joinOn("Donut")
                 .inner(this.menu);
 
-        System.out.println(ordersWithPrices);
+//        System.out.println(ordersWithPrices);
 
         DoubleColumn orderPrice = DoubleColumn.create("OrderPrice");
 
@@ -201,7 +201,7 @@ public class DonutTablesawTest
                 .by("Customer")
                 .sortOn("Customer");
 
-        System.out.println(spendPerCustomer);
+//        System.out.println(spendPerCustomer);
 
         TablesawTestUtil.assertEquals(
                 Table.create("expected")
@@ -218,7 +218,7 @@ public class DonutTablesawTest
     {
         Table donutsPerCustomerPerDay = this.orders.pivot("Customer", "DeliveryDate", "Quantity", sum);
 
-        System.out.println(donutsPerCustomerPerDay);
+//        System.out.println(donutsPerCustomerPerDay);
 
         Table expected = Table.create("expected")
               .addColumns(

@@ -1,18 +1,17 @@
 package dftalk.apicompare;
 
-import dftalk.donuts.domain.Order;
-import org.eclipse.collections.api.block.HashingStrategy;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ListIterable;
+import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.partition.list.PartitionList;
 import org.eclipse.collections.impl.block.factory.HashingStrategies;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EclipseCollApiTest
 {
@@ -58,15 +57,46 @@ public class EclipseCollApiTest
 
     @Test
     public void select()
-    {}
+    {
+        assertEquals(
+                Lists.immutable.of(
+                        new SimpleOrder("Carol", TODAY,     "Old Fashioned",  12,  10.80),
+                        new SimpleOrder("Carol", TOMORROW,  "Blueberry",       2,   2.50)
+                ),
+                this.donutOrders.select(order -> order.customer().equals("Carol"))
+        );
+    }
 
     @Test
     public void reject()
-    {}
+    {
+        assertEquals(
+                Lists.immutable.of(
+                        new SimpleOrder("Bob",   YESTERDAY, "Old Fashioned",  12,  10.80),
+                        new SimpleOrder("Carol", TODAY,     "Old Fashioned",  12,  10.80),
+                        new SimpleOrder("Dave",  TOMORROW,  "Old Fashioned",  12,  10.80),
+                        new SimpleOrder("Carol", TOMORROW,  "Blueberry",       2,   2.50),
+                        new SimpleOrder("Bob",   TOMORROW,  "Pumpkin Spice",   1,   0.75)
+                ),
+                this.donutOrders.reject(order -> order.customer().equals("Alice"))
+        );
+
+    }
 
     @Test
     public void sort()
-    {}
+    {
+        MutableList<SimpleOrder> sorted =
+            this.donutOrders.toList()
+                            .sortThis(
+                                    Comparator.comparing(SimpleOrder::customer)
+                                              .thenComparingDouble(SimpleOrder::orderPrice)
+                            );
+
+        assertEquals(
+                "Alice:2.5;Alice:2.5;Alice:10.8;Alice:15.0;Alice:15.0;Bob:0.75;Bob:10.8;Carol:2.5;Carol:10.8;Dave:10.8",
+                sorted.collect(order -> order.customer + ":" + order.orderPrice).makeString(";"));
+    }
 
     @Test
     public void inject()
