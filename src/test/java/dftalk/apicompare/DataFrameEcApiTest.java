@@ -84,7 +84,6 @@ public class DataFrameEcApiTest
                 ,
                 this.donutOrders.selectBy("Customer != 'Alice'")
         );
-
     }
 
     @Test

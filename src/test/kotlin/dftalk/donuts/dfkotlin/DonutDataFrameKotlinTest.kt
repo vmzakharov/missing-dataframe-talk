@@ -1,6 +1,5 @@
 package dftalk.donuts.dfkotlin
 
-import dftalk.util.assertDfEquals
 import org.jetbrains.kotlinx.dataframe.api.*
 import java.time.LocalDate
 import kotlin.test.Test
