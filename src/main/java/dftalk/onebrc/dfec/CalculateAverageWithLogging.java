@@ -15,15 +15,16 @@ import static io.github.vmzakharov.ecdataframe.dsl.value.ValueType.STRING;
 
 public class CalculateAverageWithLogging
 {
-    static private final String MEASUREMENT_PATH = "onebrc";
-    static private final String MEASUREMENT_FILE = "measurements_10.txt";
+    static private final String PATH = "onebrc";
+    static private final String FILE = "measurements_10.txt";
 
     public static void main(String[] args) throws Exception
     {
         URI measurementFile = CalculateAverageWithLogging.class.getClassLoader()
-                                                               .getResource(MEASUREMENT_PATH + "/" + MEASUREMENT_FILE)
+                                                               .getResource(PATH + "/" + FILE)
                                                                .toURI();
 
+        measurementFile = Path.of("D:\\projects\\1brc\\measurements_100MM.txt").toUri();
         CsvSchema msSchema = new CsvSchema()
                 .addColumn("Station", STRING)
                 .addColumn("Temperature", FLOAT)
@@ -32,7 +33,7 @@ public class CalculateAverageWithLogging
 
         CsvDataSet msDataSet = new CsvDataSet(Path.of(measurementFile), "measurements", msSchema);
 
-        System.out.println("Loading " + MEASUREMENT_FILE);
+        System.out.println("Loading " + FILE);
         Stopwatch sw = new Stopwatch();
         sw.start();
 

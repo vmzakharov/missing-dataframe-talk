@@ -6,6 +6,7 @@ import tech.tablesaw.api.Table;
 import tech.tablesaw.io.csv.CsvReadOptions;
 
 import java.net.URL;
+import java.nio.file.Path;
 
 import static tech.tablesaw.aggregate.AggregateFunctions.*;
 import static tech.tablesaw.api.ColumnType.FLOAT;
@@ -13,13 +14,16 @@ import static tech.tablesaw.api.ColumnType.STRING;
 
 public class CalculateAverageWithLogging
 {
-    static private final String MEASUREMENT_PATH = "onebrc";
-    static private final String MEASUREMENT_FILE = "measurements_10.txt";
+    static private final String PATH = "onebrc";
+    static private final String FILE = "measurements_10.txt";
 
     public static void main(String[] args) throws Exception
     {
         URL measurementFile = CalculateAverageWithLogging.class.getClassLoader()
-                                                               .getResource(MEASUREMENT_PATH + "/" + MEASUREMENT_FILE);
+                                                               .getResource(PATH + "/" + FILE);
+
+        measurementFile = Path.of("D:\\projects\\1brc\\measurements_100MM.txt").toUri()
+                              .toURL();
 
         CsvReadOptions options = CsvReadOptions
                 .builder(measurementFile)
@@ -28,7 +32,7 @@ public class CalculateAverageWithLogging
                 .header(false)
                 .build();
 
-        System.out.println("Loading " + MEASUREMENT_FILE);
+        System.out.println("Loading " + FILE);
         Stopwatch sw = new Stopwatch();
         sw.start();
 

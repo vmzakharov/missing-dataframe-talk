@@ -3,18 +3,23 @@ package dftalk.onebrc.dfkotlin
 import org.jetbrains.kotlinx.dataframe.DataFrame
 import org.jetbrains.kotlinx.dataframe.api.*
 import org.jetbrains.kotlinx.dataframe.io.readCSV
-
+import java.nio.file.Path
 import kotlin.time.TimeSource
 
-const val MEASUREMENT_PATH = "onebrc"
-const val MEASUREMENT_FILE = "measurements_10.txt"
+const val PATH = "onebrc"
+const val FILE = "measurements_10.txt"
 
 fun main() {
-    val timeSource = TimeSource.Monotonic
+    val startMark = TimeSource.Monotonic.markNow()
 
-    val startTime = timeSource.markNow()
+    val sw = StopwatchKt()
 
-    val measurementFile = object {}::class.java.classLoader.getResource("$MEASUREMENT_PATH/$MEASUREMENT_FILE")
+    var measurementFile = object {}::class.java.classLoader.getResource("$PATH/$FILE")
+
+    measurementFile = Path.of("D:\\projects\\1brc\\measurements_100MM.txt").toUri()
+        .toURL()
+
+    sw.start()
 
     val measurements = DataFrame.readCSV(
         measurementFile!!,
@@ -22,9 +27,12 @@ fun main() {
         delimiter = ';'
     );
 
-    val loadTime = timeSource.markNow()
+    sw.stop()
 
-    println("Loaded ${loadTime - startTime} ms")
+    println("T: %,d, U: %,d, F: %,d".format(sw.totalMemoryBytes, sw.freeMemoryBytes, sw.usedMemoryBytes))
+    println("Time to load, ms: ${sw.elapsedTimeMillis}")
+
+    sw.start()
 
     val aggregated = measurements.groupBy("Station")
         .aggregate {
@@ -34,11 +42,17 @@ fun main() {
         }
         .sortBy("Station")
 
-    val aggregateTime = timeSource.markNow()
+    sw.stop()
 
-    println("Aggregated ${aggregateTime - loadTime} ms")
+    println("T: %,d, U: %,d, F: %,d".format(sw.totalMemoryBytes, sw.freeMemoryBytes, sw.usedMemoryBytes))
+    println("Time to aggregate. ms: ${sw.elapsedTimeMillis}")
+
+    val endMark = TimeSource.Monotonic.markNow();
+    println("Total Time, ms ${(endMark - startMark).inWholeMilliseconds}")
 
     aggregated.forEach {
-        println("%s=%2.1f/%2.1f/%2.1f".format(it["Station"], it["min"], it["mean"], it["max"]))
+        println(
+            "%s=%2.1f/%2.1f/%2.1f".format(it["Station"], it["min"], it["mean"], it["max"])
+        )
     }
 }

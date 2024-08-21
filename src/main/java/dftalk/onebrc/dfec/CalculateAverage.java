@@ -3,7 +3,6 @@ package dftalk.onebrc.dfec;
 import io.github.vmzakharov.ecdataframe.dataframe.DataFrame;
 import io.github.vmzakharov.ecdataframe.dataset.CsvDataSet;
 import io.github.vmzakharov.ecdataframe.dataset.CsvSchema;
-import io.github.vmzakharov.ecdataframe.util.Stopwatch;
 import org.eclipse.collections.api.factory.Lists;
 
 import java.net.URI;
@@ -17,13 +16,13 @@ import static io.github.vmzakharov.ecdataframe.dsl.value.ValueType.STRING;
 
 public class CalculateAverage
 {
-    static private final String MEASUREMENT_PATH = "onebrc";
-    static private final String MEASUREMENT_FILE = "measurements_10.txt";
+    static private final String PATH = "onebrc";
+    static private final String FILE = "measurements_10.txt";
 
     public static void main(String[] args) throws Exception
     {
         URI measurementFile = CalculateAverage.class.getClassLoader()
-                                    .getResource(MEASUREMENT_PATH + "/" + MEASUREMENT_FILE)
+                                    .getResource(PATH + "/" + FILE)
                                     .toURI();
 
         CsvSchema msSchema = new CsvSchema()

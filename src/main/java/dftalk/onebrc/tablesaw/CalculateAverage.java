@@ -1,6 +1,5 @@
 package dftalk.onebrc.tablesaw;
 
-import io.github.vmzakharov.ecdataframe.util.Stopwatch;
 import tech.tablesaw.api.ColumnType;
 import tech.tablesaw.api.Table;
 import tech.tablesaw.io.csv.CsvReadOptions;
@@ -15,13 +14,13 @@ import static tech.tablesaw.api.ColumnType.STRING;
 
 public class CalculateAverage
 {
-    static private final String MEASUREMENT_PATH = "onebrc";
-    static private final String MEASUREMENT_FILE = "measurements_10.txt";
+    static private final String PATH = "onebrc";
+    static private final String FILE = "measurements_10.txt";
 
     public static void main(String[] args) throws Exception
     {
         URL measurementFile = CalculateAverage.class.getClassLoader()
-                                    .getResource(MEASUREMENT_PATH + "/" + MEASUREMENT_FILE);
+                                    .getResource(PATH + "/" + FILE);
 
         CsvReadOptions options = CsvReadOptions
                 .builder(measurementFile)
