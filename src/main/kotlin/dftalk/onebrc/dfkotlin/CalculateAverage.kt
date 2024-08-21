@@ -10,8 +10,6 @@ const val PATH = "onebrc"
 const val FILE = "measurements_10.txt"
 
 fun main() {
-    val startMark = TimeSource.Monotonic.markNow()
-
     val sw = StopwatchKt()
 
     var measurementFile = object {}::class.java.classLoader.getResource("$PATH/$FILE")
@@ -28,10 +26,7 @@ fun main() {
     );
 
     sw.stop()
-
-    println("T: %,d, U: %,d, F: %,d".format(sw.totalMemoryBytes, sw.freeMemoryBytes, sw.usedMemoryBytes))
-    println("Time to load, ms: ${sw.elapsedTimeMillis}")
-
+    printStats("Time to load", sw)
     sw.start()
 
     val aggregated = measurements.groupBy("Station")
@@ -43,16 +38,17 @@ fun main() {
         .sortBy("Station")
 
     sw.stop()
-
-    println("T: %,d, U: %,d, F: %,d".format(sw.totalMemoryBytes, sw.freeMemoryBytes, sw.usedMemoryBytes))
-    println("Time to aggregate. ms: ${sw.elapsedTimeMillis}")
-
-    val endMark = TimeSource.Monotonic.markNow();
-    println("Total Time, ms ${(endMark - startMark).inWholeMilliseconds}")
+    printStats("Time to aggregate", sw)
 
     aggregated.forEach {
         println(
             "%s=%2.1f/%2.1f/%2.1f".format(it["Station"], it["min"], it["mean"], it["max"])
         )
     }
+}
+
+fun printStats(message: String, sw: StopwatchKt)
+{
+    println("T: %,d, U: %,d, F: %,d".format(sw.totalMemoryBytes, sw.usedMemoryBytes, sw.freeMemoryBytes))
+    println("${message}, ms: ${sw.elapsedTimeMillis}")
 }
