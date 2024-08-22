@@ -16,13 +16,12 @@ import static io.github.vmzakharov.ecdataframe.dsl.value.ValueType.STRING;
 
 public class CalculateAverage
 {
-    static private final String PATH = "onebrc";
-    static private final String FILE = "measurements_10.txt";
+    static private final String FILE = "onebrc/measurements_10.txt";
 
     public static void main(String[] args) throws Exception
     {
         URI measurementFile = CalculateAverage.class.getClassLoader()
-                                    .getResource(PATH + "/" + FILE)
+                                    .getResource(FILE)
                                     .toURI();
 
         CsvSchema msSchema = new CsvSchema()

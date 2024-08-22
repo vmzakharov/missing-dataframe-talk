@@ -1,10 +1,8 @@
 package dftalk.onebrc.dfkotlin
 
-import kotlin.time.TimeMark
 import kotlin.time.TimeSource
 
-class StopwatchKt
-{
+class StopwatchKt {
     private var startTimeMark = TimeSource.Monotonic.markNow();
     private var endTimeMark = TimeSource.Monotonic.markNow();
 
@@ -21,20 +19,25 @@ class StopwatchKt
             return (this.endTimeMark - this.startTimeMark).inWholeMilliseconds
         }
 
-    fun start()
-    {
+    fun start(): StopwatchKt {
         recordMemoryUsage()
         this.startTimeMark = TimeSource.Monotonic.markNow()
+        return this
     }
 
-    fun stop()
-    {
+    fun stop(): StopwatchKt {
         this.endTimeMark = TimeSource.Monotonic.markNow()
         this.recordMemoryUsage()
+        return this
     }
 
-    fun recordMemoryUsage()
-    {
+    fun printStats(message: String): StopwatchKt {
+        println("T: %,d, U: %,d, F: %,d".format(this.totalMemoryBytes, this.usedMemoryBytes, this.freeMemoryBytes))
+        println("${message}, ms: ${this.elapsedTimeMillis}")
+        return this
+    }
+
+    private fun recordMemoryUsage() {
         val runtime = Runtime.getRuntime()
         this.freeMemoryBytes = runtime.freeMemory()
         this.totalMemoryBytes = runtime.totalMemory()

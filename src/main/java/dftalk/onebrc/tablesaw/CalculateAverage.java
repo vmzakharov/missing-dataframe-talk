@@ -14,13 +14,12 @@ import static tech.tablesaw.api.ColumnType.STRING;
 
 public class CalculateAverage
 {
-    static private final String PATH = "onebrc";
-    static private final String FILE = "measurements_10.txt";
+    static private final String FILE = "onebrc/measurements_10.txt";
 
     public static void main(String[] args) throws Exception
     {
         URL measurementFile = CalculateAverage.class.getClassLoader()
-                                    .getResource(PATH + "/" + FILE);
+                                    .getResource(FILE);
 
         CsvReadOptions options = CsvReadOptions
                 .builder(measurementFile)
